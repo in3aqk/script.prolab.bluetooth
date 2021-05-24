@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.prolab.bluetooth" name="Bluetooth" version="1.0.0" provider-name="Mattiolo Paolo - Prolab s.r.l.">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">Bluetooth manager</summary>
+		<license>GPL 2.0</license>
+   		<summary lang="en">>Bluetooth manager</summary>
+		<description lang="en">
+			Quasar Change Language
+		</description>
+		<language/>
+		<website>www.flight-it.com</website>
+		<email>mattiolo@gmail.com</email>    
+	</extension>
+</addon>

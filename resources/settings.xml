@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<!-- Plugin -->
+	<category label="30005">
+		<!-- <setting id="serverIp" type="ipaddress" label="30006" default="10.10.0.100" />
+		<setting id="installId" label="30013" type="number" default="1" /> -->
+	</category>
+	<!-- Developer -->
+	<category label="30000">
+		<setting id="debug" type="bool" label="30001" default="false" />
+	</category>
+</settings>

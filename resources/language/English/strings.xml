@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+   <string id="30000">Developer settings</string>
+   <string id="30001">Messages in debug log</string>
+   <string id="30002">Developer python debug (Activate remote server!!)</string>
+   <string id="30004">TV Channels</string>
+   <string id="30005">Plugin settings</string>
+   <string id="30006">Server Url</string>
+   <string id="30007">Server Url</string>
+   <string id="30008">Error trying to connect to the server, mybe the url or</string>
+   <string id="30009">the IP is wrong or the server is down!!</string>
+   <string id="30010">XML Error</string>
+   <string id="30011">XML Malformed or not containing data</string>
+   <string id="30012">Hotel</string>
+   <string id="30013">Installation ID</string>
+   <string id="91200">Room informations</string>
+   <!--
+   <string id="91201">Flight</string>
+   <string id="91202">Airline</string>
+   <string id="91203">Destination</string>
+   <string id="91204">Time</string>
+   <string id="91205">Estim.</string>
+   <string id="91206">Area</string>
+   <string id="91207">Gate</string>
+   <string id="91208">Status</string>
+   <string id="91209">Monitored:</string>
+   -->
+</strings>

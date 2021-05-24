@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<defaultcontrol always="true">60009</defaultcontrol>
+   	<allowoverlay>no</allowoverlay>
+	<onload/>
+	<views/>
+	<controls>
+		<!-- PAGE BACKGROUND -->
+		<control type="image">
+			<description>Background Image</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<aspectratio>scale</aspectratio>
+			<texture>black_back.png</texture>
+		</control>
+		<!-- END PAGE BACKGROUND -->
+		<!-- PAGE TITLE -->
+		<control type="label" id="60001">
+			<description>Title</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<visible>true</visible>
+			<align>center</align>
+			<aligny>center</aligny>
+			<scroll>false</scroll>
+			<info>-</info>
+			<haspath>false</haspath>
+			<font>size24</font>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+		</control>
+		<!-- END PAGE TITLE -->
+         <control type="label" id="60002">
+			<description>Mac Address</description>
+			<posx>30</posx>
+			<posy>100</posy>
+			<width>150</width>
+			<align>left</align>
+			<label></label>
+			<haspath>false</haspath>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+			<scrollsuffix/>
+		</control>
+		<control type="label"  id="60003">
+			<description>Mac Address value</description>
+            <label>abce1234567</label>
+            <posx>220</posx>
+            <posy>100</posy>
+            <width>500</width>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+		</control>
+        <control type="label" id="60004">
+			<description>IP</description>
+			<posx>30</posx>
+			<posy>150</posy>
+			<width>150</width>
+			<align>left</align>
+			<label></label>
+			<haspath>false</haspath>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+			<scrollsuffix/>
+		</control>
+		<control type="label"  id="60005">
+			<description>IP Value</description>
+            <label>1.1.1.1</label>
+            <posx>220</posx>
+            <posy>150</posy>
+            <width>500</width>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+		</control>
+        <control type="label" id="60006">
+			<description>Room</description>
+			<posx>30</posx>
+			<posy>200</posy>
+			<width>150</width>
+			<align>left</align>
+			<label></label>
+			<haspath>false</haspath>
+			<textcolor>FFFFFFFF</textcolor>
+			<shadowcolor>ff000000</shadowcolor>
+			<wrapmultiline>false</wrapmultiline>
+			<scrollsuffix/>
+		</control>
+        <control type="edit" id="60007">
+            <description>Room field</description>
+            <posx>220</posx>
+			<posy>200</posy>
+            <width>500</width>
+            <visible>true</visible>
+            <align>left</align>
+            <label></label>
+            <hinttext>Room 12345</hinttext>
+            <textoffsetx>0</textoffsetx>
+			<textcolor>FFFFFFFF</textcolor>
+            <disabledcolor>FF000000</disabledcolor>
+            <invalidcolor>FFFFFFFF</invalidcolor>
+            <texturefocus>button-focus.png</texturefocus>
+            <texturenofocus>button-nofocus.png</texturenofocus>
+            <pulseonselect>yes</pulseonselect>
+            <onup>60009</onup>
+            <ondown>60009</ondown>
+            <onleft>noop</onleft>
+            <onright>noop</onright>
+        </control>
+        <!-- SAVE BUTTON -->
+        <control type="button" id="60008">
+          <description>Save button</description>
+          <label>Save</label>
+          <posx>200</posx>
+          <posy>500</posy>
+		  <width>350</width>
+          <height>80</height>
+		  <textoffsetx>0</textoffsetx>
+          <align>center</align>
+          <aligny>center</aligny>
+          <texturenofocus border="5">img/ButtonF2.png</texturenofocus>
+          <texturefocus border="5">img/ButtonFO.png</texturefocus>
+		  <onup>60007</onup>
+          <ondown>noop</ondown>
+          <onleft>60009</onleft>
+          <onright>60009</onright>
+        </control>
+        <!-- CANCEL BUTTON -->
+         <control type="button" id="60009">
+          <description>Cancel button</description>
+          <label>Ok</label>
+          <posx>600</posx>
+          <posy>500</posy>
+		  <width>350</width>
+          <height>80</height>
+		  <textoffsetx>0</textoffsetx>
+          <align>center</align>
+          <aligny>center</aligny>
+          <texturenofocus border="5">img/ButtonNF.png</texturenofocus>
+          <texturefocus border="5">img/ButtonFO.png</texturefocus>
+		  <onup>60007</onup>
+          <ondown>noop</ondown>
+          <onleft>60008</onleft>
+          <onright>60008</onright>
+        </control>
+	</controls>
+</window>
