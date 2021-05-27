@@ -5,17 +5,35 @@
 	<onload/>
 	<views/>
 	<controls>
-		<!-- PAGE BACKGROUND -->
-		<control type="image">
-			<description>Background Image</description>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<aspectratio>scale</aspectratio>
-			<texture>black_back.png</texture>
-		</control>
-		<!-- END PAGE BACKGROUND -->
+		<include>CommonBackground</include>
+		<include>Clock</include>
+		<control type="label">
+			<description>Date label</description>
+			<right>20</right>
+			<top>35</top>
+			<width>300</width>
+			<height>15</height>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>font10</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[System.Date]</label>
+			<include>Window_OpenClose_Animation</include>
+			<animation effect="slide" start="0,0" end="-40,0" time="75" condition="Player.Muted">conditional</animation>
+		</control>	
+		<control type="image" id="9100">
+			<description>Logo Prolab</description>
+			<top>50</top>
+			<left>50</left>
+			<width>200</width>
+			<height>56</height>
+			<visible>true</visible>
+			<colordiffuse>FFFFFFFF</colordiffuse>
+			<fadetime>200</fadetime>
+			<texture>logo_prolab_small.png</texture>
+			<aspectratio>keep</aspectratio>
+		</control>		
 		<!-- PAGE TITLE -->
 		<control type="label" id="60001">
 			<description>Title</description>
@@ -34,7 +52,7 @@
 			<wrapmultiline>false</wrapmultiline>
 		</control>
 		<!-- END PAGE TITLE -->
-         <control type="label" id="60002">
+         <!-- <control type="label" id="60002">
 			<description>Mac Address</description>
 			<posx>30</posx>
 			<posy>100</posy>
@@ -46,8 +64,8 @@
 			<shadowcolor>ff000000</shadowcolor>
 			<wrapmultiline>false</wrapmultiline>
 			<scrollsuffix/>
-		</control>
-		<control type="label"  id="60003">
+		</control> -->
+		<!-- <control type="label"  id="60003">
 			<description>Mac Address value</description>
             <label>abce1234567</label>
             <posx>220</posx>
@@ -149,6 +167,6 @@
           <ondown>noop</ondown>
           <onleft>60008</onleft>
           <onright>60008</onright>
-        </control>
+        </control> -->
 	</controls>
 </window>
