@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
-   <string id="30000">Developer settings</string>
-   <string id="30001">Messages in debug log</string>
+   <string id="30000">Bluetooth settings</string>
+   <!-- <string id="30001">Messages in debug log</string>
    <string id="30002">Developer python debug (Activate remote server!!)</string>
    <string id="30004">TV Channels</string>
    <string id="30005">Plugin settings</string>
@@ -13,7 +13,7 @@
    <string id="30011">XML Malformed or not containing data</string>
    <string id="30012">Hotel</string>
    <string id="30013">Installation ID</string>
-   <string id="91200">Room informations</string>
+   <string id="91200">Room informations</string> -->
    <!--
    <string id="91201">Flight</string>
    <string id="91202">Airline</string>

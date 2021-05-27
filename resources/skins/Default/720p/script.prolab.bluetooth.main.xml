@@ -37,18 +37,19 @@
 		<!-- PAGE TITLE -->
 		<control type="label" id="60001">
 			<description>Title</description>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
+			<label>30000</label>
+			<!-- <left>10</left> -->
+			<top>30</top>
+			<width>auto</width>
 			<visible>true</visible>
 			<align>center</align>
-			<aligny>center</aligny>
+			<alignx>center</alignx>
 			<scroll>false</scroll>
 			<info>-</info>
 			<haspath>false</haspath>
-			<font>size24</font>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
+			<font>size22</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
 			<wrapmultiline>false</wrapmultiline>
 		</control>
 		<!-- END PAGE TITLE -->
@@ -132,8 +133,9 @@
             <onleft>noop</onleft>
             <onright>noop</onright>
         </control>
+		-->
         <!-- SAVE BUTTON -->
-        <control type="button" id="60008">
+        <!-- <control type="button" id="60008">
           <description>Save button</description>
           <label>Save</label>
           <posx>200</posx>
@@ -149,9 +151,9 @@
           <ondown>noop</ondown>
           <onleft>60009</onleft>
           <onright>60009</onright>
-        </control>
+        </control> -->
         <!-- CANCEL BUTTON -->
-         <control type="button" id="60009">
+         <!-- <control type="button" id="60009">
           <description>Cancel button</description>
           <label>Ok</label>
           <posx>600</posx>

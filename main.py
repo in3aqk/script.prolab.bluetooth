@@ -55,14 +55,22 @@ class BT_Manager(xbmcgui.WindowXML):
         :return:
         """
         pass
+    
+        self.getControl(60001).setLabel(__lang__(30000))
         """
-        self.getControl(60001).setLabel(__lang__(91200))
         self.getControl(60002).setLabel(__lang__(91201))
         self.getControl(60004).setLabel(__lang__(91202))
         self.getControl(60006).setLabel(__lang__(91203))
         self.getControl(60008).setLabel(__lang__(91204))
         self.getControl(60009).setLabel(__lang__(91205))
         """
+
+    def setLabels(self):
+        pass
+        # self.getControl(60003).setLabel(self._mac)
+        # self.getControl(60005).setLabel(self._ip)
+        # self.getControl(60007).setText(self._jsonObj["room"])
+
 
     def onAction(self, action):
 
