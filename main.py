@@ -18,13 +18,14 @@ class BT_Manager(xbmcgui.WindowXML):
 
     _lang = const.LANG
     _debug = False
-    _jsonObj = object
     device_list = None
     device_arr = []
+    selectedMac = -1
 
     def __init__(self, *args, **kwargs):
         addon_log(self._debug, 'Init')
         xbmcgui.WindowXML.__init__(self)
+        selectedMac = -1
 
         if kwargs:
             self._debug = kwargs.get('_debug')
@@ -69,8 +70,8 @@ class BT_Manager(xbmcgui.WindowXML):
         """When action is performed"""
         buttonCode = action.getButtonCode()
         actionID = action.getId()
-        addon_log(self._debug, "onAction(): control %i" % actionID)
-        addon_log(self._debug, "onAction(): buttonCode %i" % buttonCode)
+        #addon_log(self._debug, "onAction(): control %i" % actionID)
+        #addon_log(self._debug, "onAction(): buttonCode %i" % buttonCode)
 
         """
         if actionID == const.ACTION_PARENT_DIR or actionID == const.ACTION_PREVIOUS_MENU:
@@ -81,36 +82,45 @@ class BT_Manager(xbmcgui.WindowXML):
 
     def onClick(self, controlID):
         """When control is clicked"""
-        addon_log(self._debug, "onClick(): control %i" % controlID)
+        #addon_log(self._debug, "onClick(): control %i" % controlID)
 
         if controlID == 50:
             num = self.device_list.getSelectedPosition()
             #item = self.device_list.getSelectedItem()
 
-            selectedMac = self.device_arr[num]
-            addon_log(self._debug, "selected %s " % (selectedMac))
+            self.selectedMac = self.device_arr[num]
+            addon_log(self._debug, "selected %s " % (self.selectedMac))
 
-            '''
-            if num == 0:
-                log( "  %d clicked on %d" %(self.pluginhandle, num ) )
-                xbmcplugin.setResolvedUrl(self.pluginhandle, True, item)
-                #xbmc.executebuiltin('RunPlugin(%s)' %di_url )  #doesn't work for videos(Attempt to use invalid handle -1)
-            '''
+        if controlID == 60008: #list refresh
+            addon_log(self._debug, "List refresh")
+            devices = self.getPairedDevices()
+            self.reenderDevices(devices)
+
+        if controlID == 60009: #connect
+            addon_log(self._debug, "connect %s " % (self.selectedMac))
+            if self.selectedMac != -1:
+                self.enablePulseAudio()
+                xbmcgui.Dialog().notification('Bluetooth', 'Tentativo di connessione in corso', xbmcgui.NOTIFICATION_INFO, 5000)
+                self.command(self.selectedMac,'connect')
+            else:
+                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 5000)
 
 
-        """
-        if controlID == 60008:
-            roomName = self.getControl(60007).getText().strip()
-            self.setRoom(roomName, self._debug)
-            addon_log(self._debug, "New Room %s" % roomName)
-        if controlID == 60009:
-            self.EXIT()
-        """
+        if controlID == 60010: #disconnect aka unpair/remove
+            addon_log(self._debug, "remove %s " % (self.selectedMac))
+            if self.selectedMac != -1:
+                self.command(self.selectedMac,'remove')
+                xbmcgui.Dialog().notification('Bluetooth', 'Eliminazione device in corso', xbmcgui.NOTIFICATION_INFO, 5000)
+                self.reenderDevices()
+            else:
+                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 5000)
+
+
 
     def onFocus(self, controlID):
         """On focus change"""
         self._controlId = controlID
-        addon_log(self._debug, "onFocus(): control %i" % controlID)
+        #addon_log(self._debug, "onFocus(): control %i" % controlID)
 
     def doClose(self):
         """Close  the window and exit"""
@@ -123,8 +133,10 @@ class BT_Manager(xbmcgui.WindowXML):
 
 
     def reenderDevices(self,devices):
+        selectedMac = -1
         listitems = []
-
+        self.device_list.reset()
+        self.device_arr = []
         for device in devices:
             mac = device[7:24]
             name = device[25:]
@@ -133,6 +145,7 @@ class BT_Manager(xbmcgui.WindowXML):
             listitems.append(item)
             self.device_arr.append(mac)
         self.device_list.addItems(listitems)
+        xbmcgui.Dialog().notification('Bluetooth', 'Seleziona il device da connettere', xbmcgui.NOTIFICATION_INFO, 10000)
 
     def getPairedDevices(self):
         process = subprocess.Popen(['/usr/bin/bluetoothctl', 'paired-devices'],
@@ -140,20 +153,26 @@ class BT_Manager(xbmcgui.WindowXML):
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         devicesArr = stdout.strip().split('\n')
+        process.__del__()
         addon_log(self._debug, devicesArr)
         return devicesArr
 
     def command(self,mac,command):
+        addon_log(self._debug,'command %s %s' % (mac,command))
+
         process = subprocess.Popen(['/usr/bin/bluetoothctl', command, mac],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
 
+
     def enablePulseAudio(self):
+        addon_log(self._debug,'enablePulseAudio')
         process = subprocess.Popen(['/usr/bin/pulseaudio', '--start'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
+
 
 
 
