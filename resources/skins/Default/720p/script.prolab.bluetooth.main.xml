@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">60009</defaultcontrol>
-   	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">60008</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
 	<onload/>
 	<views/>
 	<controls>
 		<include>CommonBackground</include>
 		<include>Clock</include>
+		<include>ContentPanelBackgrounds</include>
+		<include>GenericToHomeFooter</include>
 		<control type="label">
 			<description>Date label</description>
 			<right>20</right>
@@ -21,25 +23,12 @@
 			<label>$INFO[System.Date]</label>
 			<include>Window_OpenClose_Animation</include>
 			<animation effect="slide" start="0,0" end="-40,0" time="75" condition="Player.Muted">conditional</animation>
-		</control>	
-		<control type="image" id="9100">
-			<description>Logo Prolab</description>
-			<top>50</top>
-			<left>50</left>
-			<width>200</width>
-			<height>56</height>
-			<visible>true</visible>
-			<colordiffuse>FFFFFFFF</colordiffuse>
-			<fadetime>200</fadetime>
-			<texture>logo_prolab_small.png</texture>
-			<aspectratio>keep</aspectratio>
-		</control>		
+		</control>
 		<!-- PAGE TITLE -->
-		<control type="label" id="60001">
+		<control type="label" id="60002">
 			<description>Title</description>
-			<label>30000</label>
-			<!-- <left>10</left> -->
-			<top>30</top>
+			<label>Bluetooth</label>
+			<top>10</top>
 			<width>auto</width>
 			<visible>true</visible>
 			<align>center</align>
@@ -52,123 +41,119 @@
 			<shadowcolor>black</shadowcolor>
 			<wrapmultiline>false</wrapmultiline>
 		</control>
-		<!-- END PAGE TITLE -->
-         <!-- <control type="label" id="60002">
-			<description>Mac Address</description>
-			<posx>30</posx>
-			<posy>100</posy>
-			<width>150</width>
-			<align>left</align>
-			<label></label>
-			<haspath>false</haspath>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
-			<wrapmultiline>false</wrapmultiline>
-			<scrollsuffix/>
-		</control> -->
-		<!-- <control type="label"  id="60003">
-			<description>Mac Address value</description>
-            <label>abce1234567</label>
-            <posx>220</posx>
-            <posy>100</posy>
-            <width>500</width>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
-			<wrapmultiline>false</wrapmultiline>
+		<!-- DEVICES LIST -->
+		<control type="list" id="50">
+			<left>70</left>
+			<top>78</top>
+			<width>690</width>
+			<height>500</height>
+			<onleft>2</onleft>
+			<onright>60</onright>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<viewtype label="535">list</viewtype>
+			<pagecontrol>60</pagecontrol>
+			<scrolltime>200</scrolltime>
+			<itemlayout height="40" width="580">
+				<control type="label">
+					<left>10</left>
+					<top>0</top>
+					<width>580</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout height="40" width="580">
+				<control type="label">
+					<left>10</left>
+					<top>0</top>
+					<width>580</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</focusedlayout>
 		</control>
-        <control type="label" id="60004">
-			<description>IP</description>
-			<posx>30</posx>
-			<posy>150</posy>
-			<width>150</width>
-			<align>left</align>
-			<label></label>
-			<haspath>false</haspath>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
-			<wrapmultiline>false</wrapmultiline>
-			<scrollsuffix/>
+		<control type="scrollbar" id="60">
+			<left>760</left>
+			<top>85</top>
+			<width>25</width>
+			<height>510</height>
+			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+			<onleft>50</onleft>
+			<onright>2</onright>
+			<showonepage>false</showonepage>
+			<orientation>vertical</orientation>
+			<visible>Control.IsVisible(50)</visible>
+		</control>		<!-- END DEVICES LIST -->
+		<!-- END SCROLLBAR -->
+
+		<control type="button" id="60008">
+			<description>Update button</description>
+			<label>Aggiorna lista</label>
+			<posx>900</posx>
+			<posy>300</posy>
+			<width>250</width>
+			<height>80</height>
+			<textoffsetx>0</textoffsetx>
+			<align>center</align>
+			<aligny>center</aligny>
+			<texturefocus border="5">floor_buttonFO.png</texturefocus>
+			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<onup>60010</onup>
+			<ondown>60009</ondown>
+			<onleft>noop</onleft>
+			<onright>noop</onright>
+			<onclick></onclick>
 		</control>
-		<control type="label"  id="60005">
-			<description>IP Value</description>
-            <label>1.1.1.1</label>
-            <posx>220</posx>
-            <posy>150</posy>
-            <width>500</width>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
-			<wrapmultiline>false</wrapmultiline>
+		<control type="button" id="60009">
+			<description>connect button</description>
+			<label>Connetti</label>
+			<posx>900</posx>
+			<posy>400</posy>
+			<width>250</width>
+			<height>80</height>
+			<textoffsetx>0</textoffsetx>
+			<align>center</align>
+			<aligny>center</aligny>
+			<texturefocus border="5">floor_buttonFO.png</texturefocus>
+			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<onup>60008</onup>
+			<ondown>60010</ondown>
+			<onleft>noop</onleft>
+			<onright>noop</onright>
+			<onclick></onclick>
 		</control>
-        <control type="label" id="60006">
-			<description>Room</description>
-			<posx>30</posx>
-			<posy>200</posy>
-			<width>150</width>
-			<align>left</align>
-			<label></label>
-			<haspath>false</haspath>
-			<textcolor>FFFFFFFF</textcolor>
-			<shadowcolor>ff000000</shadowcolor>
-			<wrapmultiline>false</wrapmultiline>
-			<scrollsuffix/>
+		<control type="button" id="60010">
+			<description>disconnect button</description>
+			<label>Disconnetti</label>
+			<posx>900</posx>
+			<posy>500</posy>
+			<width>250</width>
+			<height>80</height>
+			<textoffsetx>0</textoffsetx>
+			<align>center</align>
+			<aligny>center</aligny>
+			<texturefocus border="5">floor_buttonFO.png</texturefocus>
+			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<onup>60009</onup>
+			<ondown>60008</ondown>
+			<onleft>noop</onleft>
+			<onright>noop</onright>
+			<onclick></onclick>
 		</control>
-        <control type="edit" id="60007">
-            <description>Room field</description>
-            <posx>220</posx>
-			<posy>200</posy>
-            <width>500</width>
-            <visible>true</visible>
-            <align>left</align>
-            <label></label>
-            <hinttext>Room 12345</hinttext>
-            <textoffsetx>0</textoffsetx>
-			<textcolor>FFFFFFFF</textcolor>
-            <disabledcolor>FF000000</disabledcolor>
-            <invalidcolor>FFFFFFFF</invalidcolor>
-            <texturefocus>button-focus.png</texturefocus>
-            <texturenofocus>button-nofocus.png</texturenofocus>
-            <pulseonselect>yes</pulseonselect>
-            <onup>60009</onup>
-            <ondown>60009</ondown>
-            <onleft>noop</onleft>
-            <onright>noop</onright>
-        </control>
-		-->
-        <!-- SAVE BUTTON -->
-        <!-- <control type="button" id="60008">
-          <description>Save button</description>
-          <label>Save</label>
-          <posx>200</posx>
-          <posy>500</posy>
-		  <width>350</width>
-          <height>80</height>
-		  <textoffsetx>0</textoffsetx>
-          <align>center</align>
-          <aligny>center</aligny>
-          <texturenofocus border="5">img/ButtonF2.png</texturenofocus>
-          <texturefocus border="5">img/ButtonFO.png</texturefocus>
-		  <onup>60007</onup>
-          <ondown>noop</ondown>
-          <onleft>60009</onleft>
-          <onright>60009</onright>
-        </control> -->
-        <!-- CANCEL BUTTON -->
-         <!-- <control type="button" id="60009">
-          <description>Cancel button</description>
-          <label>Ok</label>
-          <posx>600</posx>
-          <posy>500</posy>
-		  <width>350</width>
-          <height>80</height>
-		  <textoffsetx>0</textoffsetx>
-          <align>center</align>
-          <aligny>center</aligny>
-          <texturenofocus border="5">img/ButtonNF.png</texturenofocus>
-          <texturefocus border="5">img/ButtonFO.png</texturefocus>
-		  <onup>60007</onup>
-          <ondown>noop</ondown>
-          <onleft>60008</onleft>
-          <onright>60008</onright>
-        </control> -->
 	</controls>
 </window>

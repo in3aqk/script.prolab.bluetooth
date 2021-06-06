@@ -3,30 +3,30 @@ import xbmcaddon
 import xbmcgui
 
 import os
-import socket
-import urllib2
-import json
 import const
+import subprocess
 from utils import addon_log
 
 
 __addon__ = xbmcaddon.Addon(id=const.PLUGINNAME)
 __icon__ = __addon__.getAddonInfo('icon')
-__lang__ = __addon__.getLocalizedString   
+__lang__ = __addon__.getLocalizedString
 
 
 class BT_Manager(xbmcgui.WindowXML):
-    
+
 
     _lang = const.LANG
     _debug = False
     _jsonObj = object
+    device_list = None
+    device_arr = []
 
     def __init__(self, *args, **kwargs):
         addon_log(self._debug, 'Init')
         xbmcgui.WindowXML.__init__(self)
 
-        if kwargs:           
+        if kwargs:
             self._debug = kwargs.get('_debug')
             addon_log(self._debug, 'kwargs %s ' % (self._debug))
 
@@ -34,19 +34,17 @@ class BT_Manager(xbmcgui.WindowXML):
 
         """Window Init"""
         addon_log(self._debug, 'onInit')
-        self.localize()        
+        self.localize()
         self._window = xbmcgui.getCurrentWindowId();
-        # set window name in order to identify it from when sending action from services 
+        # set window name in order to identify it from when sending action from services
         xbmcgui.Window(self._window).setProperty("windowName", "bt_manager")
 
-        self.setLabels()
-        xbmc.executebuiltin("Dialog.Close(busydialog)")
+        devices = self.getPairedDevices()
+        self.device_list =  self.getControl(50)
+        self.reenderDevices(devices)
 
     def exit(self):
         addon_log(self._debug, 'Exiting ...')
-
-        # cancel timers
-        # self._cancel_timers()
         self.close()
 
     def localize(self):
@@ -55,8 +53,8 @@ class BT_Manager(xbmcgui.WindowXML):
         :return:
         """
         pass
-    
-        self.getControl(60001).setLabel(__lang__(30000))
+
+        #self.getControl(60001).setLabel(__lang__(30000))
         """
         self.getControl(60002).setLabel(__lang__(91201))
         self.getControl(60004).setLabel(__lang__(91202))
@@ -65,12 +63,6 @@ class BT_Manager(xbmcgui.WindowXML):
         self.getControl(60009).setLabel(__lang__(91205))
         """
 
-    def setLabels(self):
-        pass
-        # self.getControl(60003).setLabel(self._mac)
-        # self.getControl(60005).setLabel(self._ip)
-        # self.getControl(60007).setText(self._jsonObj["room"])
-
 
     def onAction(self, action):
 
@@ -78,6 +70,7 @@ class BT_Manager(xbmcgui.WindowXML):
         buttonCode = action.getButtonCode()
         actionID = action.getId()
         addon_log(self._debug, "onAction(): control %i" % actionID)
+        addon_log(self._debug, "onAction(): buttonCode %i" % buttonCode)
 
         """
         if actionID == const.ACTION_PARENT_DIR or actionID == const.ACTION_PREVIOUS_MENU:
@@ -89,6 +82,22 @@ class BT_Manager(xbmcgui.WindowXML):
     def onClick(self, controlID):
         """When control is clicked"""
         addon_log(self._debug, "onClick(): control %i" % controlID)
+
+        if controlID == 50:
+            num = self.device_list.getSelectedPosition()
+            #item = self.device_list.getSelectedItem()
+
+            selectedMac = self.device_arr[num]
+            addon_log(self._debug, "selected %s " % (selectedMac))
+
+            '''
+            if num == 0:
+                log( "  %d clicked on %d" %(self.pluginhandle, num ) )
+                xbmcplugin.setResolvedUrl(self.pluginhandle, True, item)
+                #xbmc.executebuiltin('RunPlugin(%s)' %di_url )  #doesn't work for videos(Attempt to use invalid handle -1)
+            '''
+
+
         """
         if controlID == 60008:
             roomName = self.getControl(60007).getText().strip()
@@ -112,14 +121,50 @@ class BT_Manager(xbmcgui.WindowXML):
         xbmc.executebuiltin("XBMC.Container.Update(path,replace)")
         xbmc.executebuiltin("XBMC.ActivateWindow(Home)")
 
+
+    def reenderDevices(self,devices):
+        listitems = []
+
+        for device in devices:
+            mac = device[7:24]
+            name = device[25:]
+            item = xbmcgui.ListItem()
+            item.setLabel(name)
+            listitems.append(item)
+            self.device_arr.append(mac)
+        self.device_list.addItems(listitems)
+
+    def getPairedDevices(self):
+        process = subprocess.Popen(['/usr/bin/bluetoothctl', 'paired-devices'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        devicesArr = stdout.strip().split('\n')
+        addon_log(self._debug, devicesArr)
+        return devicesArr
+
+    def command(self,mac,command):
+        process = subprocess.Popen(['/usr/bin/bluetoothctl', command, mac],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+
+    def enablePulseAudio(self):
+        process = subprocess.Popen(['/usr/bin/pulseaudio', '--start'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+
+
+
 def main():
 
     """Read app settings"""
     setting = xbmcaddon.Addon(id=const.PLUGINNAME)
 
     scriptDebug = setting.getSetting("debug") == "true"
-    
-   
+
+
     """Open the window create an instance of windowXML"""
 
     fallBackXmlPath = xbmc.translatePath(__addon__.getAddonInfo('path'))
