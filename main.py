@@ -20,6 +20,7 @@ class BT_Manager(xbmcgui.WindowXML):
     _debug = False
     device_list = None
     device_arr = []
+    device_name_arr = []
     selectedMac = -1
 
     def __init__(self, *args, **kwargs):
@@ -54,15 +55,7 @@ class BT_Manager(xbmcgui.WindowXML):
         :return:
         """
         pass
-
         #self.getControl(60001).setLabel(__lang__(30000))
-        """
-        self.getControl(60002).setLabel(__lang__(91201))
-        self.getControl(60004).setLabel(__lang__(91202))
-        self.getControl(60006).setLabel(__lang__(91203))
-        self.getControl(60008).setLabel(__lang__(91204))
-        self.getControl(60009).setLabel(__lang__(91205))
-        """
 
 
     def onAction(self, action):
@@ -73,13 +66,6 @@ class BT_Manager(xbmcgui.WindowXML):
         #addon_log(self._debug, "onAction(): control %i" % actionID)
         #addon_log(self._debug, "onAction(): buttonCode %i" % buttonCode)
 
-        """
-        if actionID == const.ACTION_PARENT_DIR or actionID == const.ACTION_PREVIOUS_MENU:
-            addon_log(self._debug, "Trying to close")
-            self.doClose()
-            return True
-        """
-
     def onClick(self, controlID):
         """When control is clicked"""
         #addon_log(self._debug, "onClick(): control %i" % controlID)
@@ -89,6 +75,7 @@ class BT_Manager(xbmcgui.WindowXML):
             #item = self.device_list.getSelectedItem()
 
             self.selectedMac = self.device_arr[num]
+            xbmcgui.Dialog().notification('Bluetooth', 'Hai selezionato %s' % self.device_name_arr[num] , xbmcgui.NOTIFICATION_INFO, 2000)
             addon_log(self._debug, "selected %s " % (self.selectedMac))
 
         if controlID == 60008: #list refresh
@@ -103,7 +90,7 @@ class BT_Manager(xbmcgui.WindowXML):
                 xbmcgui.Dialog().notification('Bluetooth', 'Tentativo di connessione in corso', xbmcgui.NOTIFICATION_INFO, 5000)
                 self.command(self.selectedMac,'connect')
             else:
-                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 5000)
+                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 3000)
 
 
         if controlID == 60010: #disconnect aka unpair/remove
@@ -113,7 +100,7 @@ class BT_Manager(xbmcgui.WindowXML):
                 xbmcgui.Dialog().notification('Bluetooth', 'Eliminazione device in corso', xbmcgui.NOTIFICATION_INFO, 5000)
                 self.reenderDevices()
             else:
-                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 5000)
+                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 3000)
 
 
 
@@ -137,6 +124,7 @@ class BT_Manager(xbmcgui.WindowXML):
         listitems = []
         self.device_list.reset()
         self.device_arr = []
+        self.device_name_arr = []
         for device in devices:
             mac = device[7:24]
             name = device[25:]
@@ -144,8 +132,9 @@ class BT_Manager(xbmcgui.WindowXML):
             item.setLabel(name)
             listitems.append(item)
             self.device_arr.append(mac)
+            self.device_name_arr.append(name)
         self.device_list.addItems(listitems)
-        xbmcgui.Dialog().notification('Bluetooth', 'Seleziona il device da connettere', xbmcgui.NOTIFICATION_INFO, 10000)
+        xbmcgui.Dialog().notification('Bluetooth', 'Seleziona il device da connettere', xbmcgui.NOTIFICATION_INFO, 3000)
 
     def getPairedDevices(self):
         process = subprocess.Popen(['/usr/bin/bluetoothctl', 'paired-devices'],
@@ -172,8 +161,6 @@ class BT_Manager(xbmcgui.WindowXML):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
-
-
 
 
 def main():

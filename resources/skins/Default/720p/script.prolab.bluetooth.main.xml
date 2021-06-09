@@ -112,7 +112,7 @@
 			<align>center</align>
 			<aligny>center</aligny>
 			<texturefocus border="5">floor_buttonFO.png</texturefocus>
-			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<texturenofocus border="5">floor_buttonFO.png</texturenofocus>
 			<onup>60010</onup>
 			<ondown>60009</ondown>
 			<onleft>noop</onleft>
@@ -130,7 +130,7 @@
 			<align>center</align>
 			<aligny>center</aligny>
 			<texturefocus border="5">floor_buttonFO.png</texturefocus>
-			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<texturenofocus border="5">floor_buttonFO.png</texturenofocus>
 			<onup>60008</onup>
 			<ondown>60010</ondown>
 			<onleft>noop</onleft>
@@ -148,7 +148,7 @@
 			<align>center</align>
 			<aligny>center</aligny>
 			<texturefocus border="5">floor_buttonFO.png</texturefocus>
-			<texturenofocus border="5">floor_button.png</texturenofocus>
+			<texturenofocus border="5">floor_buttonFO.png</texturenofocus>
 			<onup>60009</onup>
 			<ondown>60008</ondown>
 			<onleft>noop</onleft>
