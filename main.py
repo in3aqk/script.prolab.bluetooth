@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -6,6 +8,7 @@ import os
 import const
 import subprocess
 from utils import addon_log
+import time
 
 
 __addon__ = xbmcaddon.Addon(id=const.PLUGINNAME)
@@ -22,6 +25,7 @@ class BT_Manager(xbmcgui.WindowXML):
     device_arr = []
     device_name_arr = []
     selectedMac = -1
+    connect_retry = 2
 
     def __init__(self, *args, **kwargs):
         addon_log(self._debug, 'Init')
@@ -44,6 +48,7 @@ class BT_Manager(xbmcgui.WindowXML):
         devices = self.getPairedDevices()
         self.device_list =  self.getControl(50)
         self.reenderDevices(devices)
+        self.getDevices()
 
     def exit(self):
         addon_log(self._debug, 'Exiting ...')
@@ -73,10 +78,12 @@ class BT_Manager(xbmcgui.WindowXML):
         if controlID == 50:
             num = self.device_list.getSelectedPosition()
             #item = self.device_list.getSelectedItem()
-
-            self.selectedMac = self.device_arr[num]
-            xbmcgui.Dialog().notification('Bluetooth', 'Hai selezionato %s' % self.device_name_arr[num] , xbmcgui.NOTIFICATION_INFO, 2000)
-            addon_log(self._debug, "selected %s " % (self.selectedMac))
+            if num > 0:
+                self.selectedMac = self.device_arr[num]
+                xbmcgui.Dialog().notification('Bluetooth', 'Hai selezionato %s' % self.device_name_arr[num] , xbmcgui.NOTIFICATION_INFO, 2000)
+                addon_log(self._debug, "selected %s " % (self.selectedMac))
+            else:
+                addon_log(self._debug, "selected root")
 
         if controlID == 60008: #list refresh
             addon_log(self._debug, "List refresh")
@@ -86,19 +93,45 @@ class BT_Manager(xbmcgui.WindowXML):
         if controlID == 60009: #connect
             addon_log(self._debug, "connect %s " % (self.selectedMac))
             if self.selectedMac != -1:
-                self.enablePulseAudio()
+                out, err = self.enablePulseAudio()
+                addon_log(self._debug,out)
+                addon_log(self._debug,err)
+                time.sleep(2)
                 xbmcgui.Dialog().notification('Bluetooth', 'Tentativo di connessione in corso', xbmcgui.NOTIFICATION_INFO, 5000)
-                self.command(self.selectedMac,'connect')
+                retry = self.connect_retry
+                connected = False
+                while retry > 0:
+                    addon_log(self._debug,"connection retry %s" % retry)
+                    retry -=1
+                    connected = self.connect(self.selectedMac)
+                    if connected:
+                        dialog = xbmcgui.Dialog()
+                        ret = dialog.ok('Bluetooth', 'Sono connesso')
+                        #xbmcgui.Dialog().notification('Bluetooth', 'Connesso', xbmcgui.NOTIFICATION_INFO, 5000)
+                        break
+                if not connected:
+                        xbmcgui.Dialog().notification('Bluetooth', 'Non riesco a connettermi', xbmcgui.NOTIFICATION_ERROR, 3000)
+                        addon_log(self._debug,"Unable to connect")
+
             else:
                 xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 3000)
 
 
-        if controlID == 60010: #disconnect aka unpair/remove
+        if controlID == 60010: #unpair/remove
             addon_log(self._debug, "remove %s " % (self.selectedMac))
             if self.selectedMac != -1:
                 self.command(self.selectedMac,'remove')
                 xbmcgui.Dialog().notification('Bluetooth', 'Eliminazione device in corso', xbmcgui.NOTIFICATION_INFO, 5000)
-                self.reenderDevices()
+                self.reenderDevices(self.getPairedDevices())
+            else:
+                xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 3000)
+
+        if controlID == 60011: #disconnect
+            addon_log(self._debug, "disconnect %s " % (self.selectedMac))
+            if self.selectedMac != -1:
+                self.command(self.selectedMac,'disconnect')
+                xbmcgui.Dialog().notification('Bluetooth', 'Disconessione in corso', xbmcgui.NOTIFICATION_INFO, 2000)
+                self.reenderDevices(self.getPairedDevices())
             else:
                 xbmcgui.Dialog().notification('Bluetooth', 'Seleziona un device dalla lista', xbmcgui.NOTIFICATION_INFO, 3000)
 
@@ -125,6 +158,11 @@ class BT_Manager(xbmcgui.WindowXML):
         self.device_list.reset()
         self.device_arr = []
         self.device_name_arr = []
+        item = xbmcgui.ListItem()
+        item.setLabel("Selezionare un dispositivo")
+        listitems.append(item)
+        self.device_arr.append("root")
+        self.device_name_arr.append("root")
         for device in devices:
             mac = device[7:24]
             name = device[25:]
@@ -134,6 +172,7 @@ class BT_Manager(xbmcgui.WindowXML):
             self.device_arr.append(mac)
             self.device_name_arr.append(name)
         self.device_list.addItems(listitems)
+        self.device_list.selectItem(0)
         xbmcgui.Dialog().notification('Bluetooth', 'Seleziona il device da connettere', xbmcgui.NOTIFICATION_INFO, 3000)
 
     def getPairedDevices(self):
@@ -153,7 +192,29 @@ class BT_Manager(xbmcgui.WindowXML):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
+        return stdout, stderr
 
+    def connect(self,mac):
+        addon_log(self._debug,'connecting %s' % mac)
+
+        process = subprocess.Popen(['/usr/bin/bluetoothctl', 'connect', mac],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+
+        while True:
+            line = process.stdout.readline()
+            if line != '':
+                addon_log(self._debug,'line %s' % line)
+                if 'Failed' in line:
+                    addon_log(self._debug,"connection failed")
+                if 'Connected: yes' in line:
+                    addon_log(self._debug,"connection successfull")
+                    return True
+
+            else:
+                break
+        addon_log(self._debug,"connection attempt end")
+        return False
 
     def enablePulseAudio(self):
         addon_log(self._debug,'enablePulseAudio')
@@ -161,6 +222,29 @@ class BT_Manager(xbmcgui.WindowXML):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
+        return stdout, stderr
+
+
+    def getDeviceInfo(self,mac):
+        addon_log(self._debug,'getDeviceInfo %s' % mac)
+        process = subprocess.Popen(['/usr/bin/bluetoothctl','info', mac],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        return stdout, stderr
+
+    def getDevices(self):
+        devicesArr = []
+        devices = self.getPairedDevices()
+        for device in devices:
+            mac = device[7:24]
+            deviceInfo = self.getDeviceInfo(mac)
+            addon_log(self._debug,deviceInfo)
+
+        return devicesArr
+
+
+
 
 
 def main():

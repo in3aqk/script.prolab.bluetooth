@@ -59,8 +59,8 @@
 					<left>10</left>
 					<top>0</top>
 					<width>580</width>
-					<height>40</height>
-					<font>font13</font>
+					<height>50</height>
+					<font>font16</font>
 					<textcolor>grey2</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -73,8 +73,8 @@
 					<left>10</left>
 					<top>0</top>
 					<width>580</width>
-					<height>40</height>
-					<font>font13</font>
+					<height>50</height>
+					<font>font16</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -105,7 +105,7 @@
 			<description>Update button</description>
 			<label>Aggiorna lista</label>
 			<posx>900</posx>
-			<posy>300</posy>
+			<posy>200</posy>
 			<width>250</width>
 			<height>80</height>
 			<textoffsetx>0</textoffsetx>
@@ -114,6 +114,24 @@
 			<texturefocus border="5">floor_buttonFO.png</texturefocus>
 			<texturenofocus border="5">floor_buttonFO.png</texturenofocus>
 			<onup>60010</onup>
+			<ondown>60011</ondown>
+			<onleft>noop</onleft>
+			<onright>noop</onright>
+			<onclick></onclick>
+		</control>
+		<control type="button" id="60011">
+			<description>Disconect</description>
+			<label>Disconnetti</label>
+			<posx>900</posx>
+			<posy>300</posy>
+			<width>250</width>
+			<height>80</height>
+			<textoffsetx>0</textoffsetx>
+			<align>center</align>
+			<aligny>center</aligny>
+			<texturefocus border="5">floor_buttonFO.png</texturefocus>
+			<texturenofocus border="5">floor_buttonFO.png</texturenofocus>
+			<onup>60008</onup>
 			<ondown>60009</ondown>
 			<onleft>noop</onleft>
 			<onright>noop</onright>
@@ -138,8 +156,8 @@
 			<onclick></onclick>
 		</control>
 		<control type="button" id="60010">
-			<description>disconnect button</description>
-			<label>Disconnetti</label>
+			<description>Rimuovi button</description>
+			<label>Rimuovi</label>
 			<posx>900</posx>
 			<posy>500</posy>
 			<width>250</width>
